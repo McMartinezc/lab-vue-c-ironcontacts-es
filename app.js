@@ -478,6 +478,24 @@ createApp({
       },
     ]);
 
-    return { allContacts };
+    const nameFilter = ref("");
+    const popularityFilter = ref(0);
+    const wonFilter= ref("");
+   
+    
+    const filteredContacts = computed(()=>{
+      return allContacts.value.filter((actor) => {
+        const nameMatch = actor.name.toLowerCase().includes(nameFilter.value.toLowerCase());
+        const popularityMatch = actor.popularity >= popularityFilter.value;
+        const wonOscarMatch = wonFilter.value === "oscar" ? actor.wonOscar : true;
+        const wonEmmyMatch = wonFilter.value === "emmy" ? actor.wonEmmy : true;
+   
+        return nameMatch && popularityMatch &&wonEmmyMatch && wonOscarMatch;
+      });
+    });
+    
+
+
+    return {  allContacts, nameFilter, popularityFilter, wonFilter, filteredContacts};
   },
 }).mount("#app");
